@@ -1,0 +1,47 @@
+export const sampleQuiz = {
+  id: 'railway-ntpc-mini-mock-01',
+  title: 'RRB NTPC Mini Mock Test',
+  durationSeconds: 10 * 60,
+  questions: [
+    {
+      id: 'q1',
+      subject: 'Reasoning',
+      question: 'If TRAIN is coded as USBJO, then how is RAIL coded?',
+      options: ['SBJM', 'SBHK', 'QZHK', 'TBJM'],
+      correctOptionIndex: 0,
+      explanation: 'Each letter is shifted one position forward: T to U, R to S, A to B, I to J, N to O.',
+    },
+    {
+      id: 'q2',
+      subject: 'Mathematics',
+      question: 'A train running at 72 km/h crosses a pole in 15 seconds. What is the length of the train?',
+      options: ['250 m', '275 m', '300 m', '320 m'],
+      correctOptionIndex: 2,
+      explanation: '72 km/h equals 20 m/s. Length = speed x time = 20 x 15 = 300 m.',
+    },
+    {
+      id: 'q3',
+      subject: 'General Awareness',
+      question: 'The headquarters of Indian Railways is located in which city?',
+      options: ['Mumbai', 'New Delhi', 'Kolkata', 'Chennai'],
+      correctOptionIndex: 1,
+      explanation: 'Indian Railways is headquartered at Rail Bhavan in New Delhi.',
+    },
+    {
+      id: 'q4',
+      subject: 'General Science',
+      question: 'Which gas is primarily responsible for the greenhouse effect?',
+      options: ['Oxygen', 'Nitrogen', 'Carbon dioxide', 'Hydrogen'],
+      correctOptionIndex: 2,
+      explanation: 'Carbon dioxide is one of the major greenhouse gases that traps heat in the atmosphere.',
+    },
+    {
+      id: 'q5',
+      subject: 'Mathematics',
+      question: 'The average of 12, 18, 24, and 30 is:',
+      options: ['20', '21', '22', '24'],
+      correctOptionIndex: 1,
+      explanation: 'Average = (12 + 18 + 24 + 30) / 4 = 84 / 4 = 21.',
+    },
+  ],
+};
