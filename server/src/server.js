@@ -7,8 +7,10 @@ async function startServer() {
   try {
     await connectDatabase();
 
-    app.listen(env.PORT, () => {
-      logger.info(`API server running on port ${env.PORT}`);
+    const PORT = process.env.PORT || env.PORT || 5000;
+
+    app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`API server running on port ${PORT}`);
     });
   } catch (error) {
     logger.error('Failed to start API server', error);
