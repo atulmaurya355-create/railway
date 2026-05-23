@@ -25,6 +25,12 @@ import { UserLeaderboardStatsPage } from '../pages/UserLeaderboardStatsPage.jsx'
 import { AnalyticsPage } from '../pages/AnalyticsPage.jsx';
 import { AchievementsPage } from '../pages/AchievementsPage.jsx';
 import { StudyPlanPage } from '../pages/StudyPlanPage.jsx';
+import { NotesPage } from '../pages/NotesPage.jsx';
+import { BookmarksPage } from '../pages/BookmarksPage.jsx';
+import { RecommendationsPage } from '../pages/RecommendationsPage.jsx';
+import { WeakTopicsPage } from '../pages/WeakTopicsPage.jsx';
+import { RevisionPlannerPage } from '../pages/RevisionPlannerPage.jsx';
+import { AdminPage } from '../pages/AdminPage.jsx';
 
 
 export const router = createBrowserRouter([
@@ -65,6 +71,54 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <StudyPlanPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'notes',
+        element: (
+          <ProtectedRoute>
+            <NotesPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'bookmarks',
+        element: (
+          <ProtectedRoute>
+            <BookmarksPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'recommendations',
+        element: (
+          <ProtectedRoute>
+            <RecommendationsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'weak-topics',
+        element: (
+          <ProtectedRoute>
+            <WeakTopicsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'revisions',
+        element: (
+          <ProtectedRoute>
+            <RevisionPlannerPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin',
+        element: (
+          <ProtectedRoute>
+            <AdminPage />
           </ProtectedRoute>
         ),
       },

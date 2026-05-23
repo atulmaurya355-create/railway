@@ -12,7 +12,6 @@ import {
   FileText,
   GraduationCap,
   HelpCircle,
-  MessageCircle,
   PlayCircle,
   ShieldCheck,
   Sparkles,
@@ -22,16 +21,14 @@ import {
   Trophy,
   Users,
   Zap,
-  Search,
   Download,
   Award,
   TrendingUp,
   Lightbulb,
-  Check,
-  Lock,
-  Mail
+  Check
 } from 'lucide-react';
 import { Button } from '../components/ui/Button.jsx';
+import { ThreeDScene } from '../components/3d/ThreeDScene.jsx';
 
 const examTracks = [
   {
@@ -39,7 +36,7 @@ const examTracks = [
     title: 'RRB NTPC',
     subtitle: 'Non-Technical Popular Categories',
     description: 'Graduate & Undergraduate level posts (Clerk, Guard, Station Master).',
-    color: 'from-blue-600 to-indigo-700',
+    color: 'from-blue-600 to-cyan-500',
     accentColor: '#005BAC',
     stats: '15,230 Vacancies',
     pyqCount: '48 Sets',
@@ -51,7 +48,7 @@ const examTracks = [
     title: 'RRB Group D',
     subtitle: 'Level 1 Track Maintainer & Pointsman',
     description: 'Focused practice on General Science, Maths, Reasoning & GK.',
-    color: 'from-emerald-500 to-teal-600',
+    color: 'from-emerald-500 to-teal-500',
     accentColor: '#10B981',
     stats: '103,769 Vacancies',
     pyqCount: '62 Sets',
@@ -75,7 +72,7 @@ const examTracks = [
     title: 'RRB JE',
     subtitle: 'Junior Engineer (Civil, Mech, Elect, IT)',
     description: 'Specialist engineering papers combined with general aptitude diagnostics.',
-    color: 'from-purple-600 to-pink-700',
+    color: 'from-purple-600 to-pink-500',
     accentColor: '#8B5CF6',
     stats: '7,911 Vacancies',
     pyqCount: '28 Sets',
@@ -87,7 +84,7 @@ const examTracks = [
     title: 'RPF Constable & SI',
     subtitle: 'Railway Protection Force',
     description: 'Rigorous quantitative tests, general awareness, and physical standards guidelines.',
-    color: 'from-rose-500 to-red-700',
+    color: 'from-rose-500 to-red-650',
     accentColor: '#D32F2F',
     stats: '4,660 Vacancies',
     pyqCount: '20 Sets',
@@ -125,19 +122,39 @@ const aiDoubtPrompts = [
   }
 ];
 
+const testimonials = [
+  {
+    name: 'Amit Sharma',
+    post: 'Station Master, RRB NTPC 2024',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120',
+    quote: 'The CBT interface of this platform is identical to the actual exam. Doing mock sets here kept my anxiety under control on the big day. Highly recommended!',
+    badge: '100% CBT Accuracy'
+  },
+  {
+    name: 'Priyanka Verma',
+    post: 'Assistant Loco Pilot, ALP 2023',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120',
+    quote: 'The AI Tutor doubts solver cleared my speed-time formulas instantly. I completed the entire course target and achieved score increases within 2 weeks.',
+    badge: 'Loco Master Gold'
+  },
+  {
+    name: 'Rahul Maurya',
+    post: 'Junior Engineer, Civil 2024',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120',
+    quote: 'Beautiful preparation dashboard! Detailed charts pointed out my weak areas in concrete tech, and the gold toppers lists kept me extremely motivated.',
+    badge: 'Bullet Speedster'
+  }
+];
+
 export function HomePage() {
-  // CBT Showcase states
   const [cbtActiveTab, setCbtActiveTab] = useState('math');
   const [cbtSelectedOption, setCbtSelectedOption] = useState(null);
-  const [cbtTimeLeft, setCbtTimeLeft] = useState(120); // 2 minutes countdown
-  
-  // AI Doubt solver states
+  const [cbtTimeLeft, setCbtTimeLeft] = useState(120); 
   const [activeDoubtIndex, setActiveDoubtIndex] = useState(0);
   const [aiTypingText, setAiTypingText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-
-  // PYQ Download state
   const [downloadingId, setDownloadingId] = useState(null);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   // Timer countdown
   useEffect(() => {
@@ -162,7 +179,7 @@ export function HomePage() {
         setIsTyping(false);
         clearInterval(typingInterval);
       }
-    }, 8); // Fast typing speed
+    }, 10); 
 
     return () => clearInterval(typingInterval);
   }, [activeDoubtIndex]);
@@ -184,23 +201,24 @@ export function HomePage() {
 
   return (
     <div className="relative overflow-hidden bg-slate-50 text-slate-900 dark:bg-[#060b19] dark:text-slate-100 min-h-screen pb-20 space-y-24">
-      {/* BACKGROUND GRAPHICS: Train tracks grid */}
-      <div className="absolute inset-0 pointer-events-none railway-grid opacity-70 z-0" />
-      <div className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-railway-blue/5 dark:bg-cyan-500/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-railway-red/5 dark:bg-amber-500/5 blur-[120px] pointer-events-none" />
+      {/* Background neon tracking grids */}
+      <div className="absolute inset-0 pointer-events-none railway-grid-neon opacity-75 z-0" />
+      <div className="absolute top-[10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-cyan-500/5 dark:bg-cyan-500/10 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[130px] pointer-events-none" />
 
-      {/* SECTION 1: HERO SECTION */}
-      <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 lg:pt-10 grid lg:grid-cols-12 gap-12 items-center">
+      {/* HERO SECTION WITH 3D CANVAS */}
+      <section className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-14 grid lg:grid-cols-12 gap-12 items-center min-h-[90vh]">
         <div className="lg:col-span-7 space-y-8">
-          {/* Tagline Badge */}
+          
+          {/* Animated Sparkle Badge */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 rounded-full border border-railway-blue/20 bg-white/80 px-4 py-2 text-xs sm:text-sm font-semibold text-railway-blue dark:border-cyan-500/20 dark:bg-slate-900/80 dark:text-cyan-300 shadow-sm glass-panel"
+            className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-4 py-2 text-xs sm:text-sm font-black text-cyan-700 dark:border-cyan-400/30 dark:bg-[#0a1128]/80 dark:text-cyan-300 shadow-lg animate-neon-pulse"
           >
-            <Sparkles size={14} className="text-railway-gold animate-pulse" />
-            <span>AI-Powered Exam Engine v2.0 Live</span>
+            <Sparkles size={15} className="text-railway-gold animate-bounce" />
+            <span>EXAM TARGET RADAR V2.0 ENGINE LIVE</span>
           </motion.div>
 
           {/* Heading */}
@@ -209,25 +227,26 @@ export function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl"
+              className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-7xl leading-tight"
             >
-              Crack RRB Exams with{' '}
-              <span className="bg-gradient-to-r from-railway-blue via-railway-red to-railway-gold bg-clip-text text-transparent">
-                AI-Powered
+              Master RRB Exams in Our{' '}
+              <span className="bg-gradient-to-r from-railway-blue via-railway-red to-railway-gold bg-clip-text text-transparent font-black">
+                Interactive 3D
               </span>{' '}
-              Preparation
+              Study Cockpit
             </motion.h1>
+            
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-350"
+              className="max-w-2xl text-base sm:text-xl leading-relaxed text-slate-600 dark:text-slate-300 font-medium"
             >
-              Practice mock tests mimicking the actual Indian Railways computer-based exams (CBT). Solve previous year shift papers, track your subject analytics, and resolve complex physics or math questions instantly using our active AI Tutor.
+              Practice mock tests inside exact digital CBT console setups. Access shift-wise unsolved pdf papers, inspect subject analytics gauges, and clear technical doubts with our active AI Mentor.
             </motion.p>
           </div>
 
-          {/* Primary Buttons */}
+          {/* Primary CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -237,114 +256,93 @@ export function HomePage() {
             <Button
               as={Link}
               to="/register"
-              className="h-12 px-6 rounded-lg font-bold bg-gradient-to-r from-railway-blue to-railway-red hover:from-railway-blue/90 hover:to-railway-red/90 text-white shadow-lg flex items-center justify-center gap-2 border-none transform transition hover:scale-[1.02]"
+              className="h-13 px-8 rounded-xl font-black bg-gradient-to-r from-railway-blue to-railway-red text-white shadow-xl hover:shadow-cyan-500/20 flex items-center justify-center gap-2 border-none transform transition hover:scale-[1.03]"
             >
               Start Free Preparation
               <ArrowRight size={18} />
             </Button>
+            
             <Button
               as={Link}
               to="/login"
               variant="secondary"
-              className="h-12 px-6 rounded-lg font-semibold border-slate-200/80 bg-white/95 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm flex items-center justify-center gap-2"
+              className="h-13 px-8 rounded-xl font-bold border-slate-200/80 bg-white/95 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900/90 dark:hover:bg-slate-850 text-slate-800 dark:text-slate-200 shadow-md flex items-center justify-center gap-2"
             >
-              <PlayCircle size={18} className="text-railway-red" />
+              <PlayCircle size={18} className="text-railway-red animate-pulse" />
               Take Free Mock Test
             </Button>
           </motion.div>
 
-          {/* Trust Badges */}
+          {/* Trust Counters */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="pt-6 border-t border-slate-200/60 dark:border-slate-800/60"
           >
-            <p className="text-xs uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500 mb-4">
-              COMMITTED TO EXCELLENCE
+            <p className="text-xs uppercase font-extrabold tracking-widest text-slate-400 dark:text-slate-500 mb-4">
+              EDTECH BRAND OF TRUSTED EXCELLENCE
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[
-                { label: 'Active Learners', val: '50,000+' },
+                { label: 'Active Aspirants', val: '50,000+' },
                 { label: 'Practice Sets', val: '10,000+' },
                 { label: 'AI Doubt Support', val: '24/7 Live' },
-                { label: 'Real Exam Layout', val: '100% CBT' }
+                { label: 'Exam Console', val: '100% CBT' }
               ].map((item) => (
                 <div key={item.label} className="flex flex-col">
-                  <span className="text-xl font-bold bg-gradient-to-r from-railway-blue to-railway-gold bg-clip-text text-transparent">
+                  <span className="text-2xl font-black bg-gradient-to-r from-railway-blue to-railway-gold bg-clip-text text-transparent">
                     {item.val}
                   </span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400">{item.label}</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">{item.label}</span>
                 </div>
               ))}
             </div>
           </motion.div>
+
         </div>
 
-        {/* 3D Train Visual Mockup Panel with floating features */}
-        <div className="lg:col-span-5 relative flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-tr from-railway-blue/10 to-railway-red/10 rounded-full blur-[60px] animate-pulse-slow pointer-events-none" />
+        {/* 3D Train Visual Canvas Frame */}
+        <div className="lg:col-span-5 relative flex items-center justify-center min-h-[400px]">
+          {/* Glass-plate panel background underneath */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-railway-blue/10 to-railway-red/10 rounded-3xl blur-[50px] animate-pulse-slow pointer-events-none" />
           
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, type: 'spring' }}
-            className="relative w-full max-w-md animate-float-soft"
+            className="relative w-full h-[450px] rounded-3xl border border-white/20 bg-slate-950/60 p-1 shadow-2xl backdrop-blur-xl dark:border-slate-800/80 overflow-hidden"
           >
-            {/* Real static Vande Bharat image loaded */}
-            <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-slate-900/40 p-4 shadow-2xl backdrop-blur-xl dark:border-slate-800/40">
-              <div className="relative h-60 w-full rounded-xl bg-slate-950/80 overflow-hidden flex items-center justify-center">
-                {/* 3D Scene elements */}
-                <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-slate-900 to-transparent z-10" />
-                {/* Motion track lines */}
-                <div className="absolute bottom-6 w-[200%] h-1 bg-gradient-to-r from-transparent via-railway-gold to-transparent animate-train-running opacity-80" />
-                <div className="absolute bottom-10 w-[200%] h-[2px] bg-white/20 animate-train-running animation-delay-300" />
-                
-                <img
-                  src="/vande_bharat_3d.png"
-                  alt="3D Vande Bharat Train"
-                  className="relative z-20 h-44 object-contain filter drop-shadow-[0_15px_15px_rgba(0,91,172,0.4)]"
-                />
-                
-                {/* Floating particle elements */}
-                <div className="absolute top-8 left-12 w-2 h-2 rounded-full bg-railway-gold animate-ping opacity-60" />
-                <div className="absolute top-16 right-16 w-3 h-3 rounded-full bg-cyan-400 animate-pulse opacity-40" />
-                <div className="absolute bottom-20 left-24 w-1.5 h-1.5 rounded-full bg-railway-red animate-ping" />
-              </div>
+            {/* The Asynchronous 3D Scene */}
+            <ThreeDScene />
 
-              {/* Connected glass cards summarizing daily activities */}
-              <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
-                <div className="p-3 rounded-lg bg-white/5 border border-white/10 dark:bg-slate-950/50">
-                  <div className="flex items-center gap-1.5 text-railway-gold font-bold mb-1">
-                    <Trophy size={13} />
-                    <span>Leaderboard</span>
-                  </div>
-                  <p className="text-white font-medium">Rank #142 (94th pct)</p>
-                </div>
-                <div className="p-3 rounded-lg bg-white/5 border border-white/10 dark:bg-slate-950/50">
-                  <div className="flex items-center gap-1.5 text-cyan-400 font-bold mb-1">
-                    <Zap size={13} />
-                    <span>Streak</span>
-                  </div>
-                  <p className="text-white font-medium">12 Days Active</p>
-                </div>
-              </div>
+            {/* Float HUD overlay badges */}
+            <div className="absolute top-4 left-4 z-10 p-3 rounded-2xl glass-panel-futuristic text-xs flex items-center gap-2 border-none">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+              <span className="font-extrabold text-white">Vande Bharat 3D Engine Active</span>
             </div>
-            
-            {/* Speed trails and motion lines outside */}
-            <div className="absolute -left-6 top-[40%] w-12 h-1 bg-railway-red rounded-full opacity-60 blur-xs" />
-            <div className="absolute -right-6 top-[30%] w-16 h-0.5 bg-railway-blue rounded-full opacity-60 blur-xs" />
+
+            <div className="absolute bottom-4 right-4 z-10 p-3.5 rounded-2xl glass-panel-futuristic border-none max-w-[200px]">
+              <p className="text-[10px] text-cyan-400 font-extrabold uppercase tracking-wider">Streak Reward</p>
+              <p className="text-xs text-white font-bold mt-0.5">Maintain 15-day streak to claim multiplier bonus</p>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* SECTION 2: EXAM CATEGORIES */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-        <SectionHeading
-          eyebrow="Exam categories"
-          title="Choose Your Railway Exam Track"
-          text="Start with a dedicated mock category designed directly from recent exam notifications."
-        />
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="text-xs uppercase font-extrabold tracking-widest text-railway-red bg-railway-red/10 px-3.5 py-1 rounded-full">
+            Target career routes
+          </span>
+          <h2 className="text-3xl font-extrabold sm:text-5xl tracking-tight leading-tight">
+            Choose Your Railway Exam Track
+          </h2>
+          <p className="text-slate-600 dark:text-slate-350 text-sm font-semibold">
+            Choose a dedicated mock track configured directly from the latest RRB exam notifications.
+          </p>
+        </div>
         
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
           {examTracks.map((track, i) => (
@@ -354,31 +352,32 @@ export function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-all dark:border-slate-800 dark:bg-slate-900 group"
+              className="relative overflow-hidden rounded-2xl p-6 glass-card-neon group flex flex-col justify-between"
             >
-              {/* Colored top bar indicator */}
-              <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${track.color}`} />
+              {/* Top border bar */}
+              <div className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${track.color}`} />
               
-              <div className="flex justify-between items-start mb-4">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                  {track.difficulty}
-                </span>
-                <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-350 px-2 py-0.5 rounded font-semibold">
-                  {track.pyqCount}
-                </span>
+              <div>
+                <div className="flex justify-between items-start mb-4">
+                  <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                    {track.difficulty}
+                  </span>
+                  <span className="text-xs bg-cyan-500/10 text-cyan-600 dark:bg-cyan-500/5 dark:text-cyan-300 px-2 py-0.5 rounded font-black border border-cyan-500/15">
+                    {track.pyqCount}
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-extrabold text-slate-950 dark:text-white leading-tight mb-1 group-hover:text-cyan-500 dark:group-hover:text-cyan-350 transition-colors">
+                  {track.title}
+                </h3>
+                <p className="text-[10px] text-slate-550 dark:text-slate-400 font-bold mb-3">{track.subtitle}</p>
+                <p className="text-xs text-slate-650 dark:text-slate-300 leading-relaxed font-semibold">
+                  {track.description}
+                </p>
               </div>
 
-              <h3 className="text-lg font-bold text-slate-950 dark:text-white leading-tight mb-1 group-hover:text-railway-blue dark:group-hover:text-cyan-400 transition-colors">
-                {track.title}
-              </h3>
-              <p className="text-[11px] text-slate-500 font-semibold mb-2">{track.subtitle}</p>
-              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-                {track.description}
-              </p>
-
-              <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
-                <span className="font-bold text-railway-red">{track.stats}</span>
+              <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[10px] font-extrabold">
+                <span className="text-railway-red">{track.stats}</span>
                 <span className="text-slate-400 flex items-center gap-1">
                   <Users size={11} />
                   {track.activeUsers}
@@ -392,20 +391,25 @@ export function HomePage() {
       {/* SECTION 3: POPULAR EXAMS HUB */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 relative z-10 items-center">
         <div className="lg:col-span-5 space-y-6">
-          <SectionHeading
-            eyebrow="Popular Exams"
-            title="Trending Mock Exams Searched by Aspirants"
-            text="Boost your computer aptitude. These practice mocks are currently yielding the highest rate of score improvements this week."
-          />
-          <div className="p-5 rounded-xl border border-railway-blue/10 bg-railway-blue/5 dark:bg-slate-900/40 space-y-4">
+          <span className="text-xs uppercase font-extrabold tracking-widest text-cyan-600 bg-cyan-500/10 px-3 py-1 rounded-full">
+            Trending runs
+          </span>
+          <h2 className="text-3xl font-extrabold sm:text-5xl leading-tight">
+            Popular Mock Mocks Searched by Candidates
+          </h2>
+          <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed">
+            Accelerate your mock velocities. These specific exam mock tests are producing the largest score improvements among students this week.
+          </p>
+          
+          <div className="p-5 rounded-2xl border border-cyan-500/15 bg-cyan-500/5 dark:bg-[#0a1128]/40 space-y-4 shadow-sm">
             <div className="flex gap-3">
-              <span className="grid size-9 place-items-center rounded bg-railway-blue text-white shrink-0">
+              <span className="grid size-10 place-items-center rounded-xl bg-gradient-to-tr from-railway-blue to-cyan-500 text-white shrink-0 shadow-md">
                 <TrendingUp size={18} />
               </span>
               <div>
-                <h4 className="font-bold text-sm">Real-time Competition Analysis</h4>
-                <p className="text-xs text-slate-650 dark:text-slate-400 leading-relaxed mt-0.5">
-                  Over 12,000 users are active on the NTPC sprint layout right now. Challenge your speeds today.
+                <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">Active Contestant Tracker</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5 font-medium">
+                  Over 12,400 students are running NTPC practice drills right now. Challenge your speeds today!
                 </p>
               </div>
             </div>
@@ -420,18 +424,18 @@ export function HomePage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-railway-blue/20 dark:border-slate-800 dark:bg-slate-900/60 transition-all group"
+              className="flex items-center justify-between p-4.5 rounded-2xl border border-slate-200 bg-white hover:border-cyan-500/20 dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-cyan-500/30 transition-all group"
             >
-              <div className="space-y-1 pr-4">
-                <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-railway-blue dark:group-hover:text-cyan-400 transition-all">
+              <div className="space-y-1.5 pr-4">
+                <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-cyan-500 dark:group-hover:text-cyan-300 transition-all">
                   {exam.title}
                 </h4>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-550 dark:text-slate-400 font-semibold">
                   <span className="flex items-center gap-1">
                     <Users size={12} className="text-slate-400" />
                     {exam.attempts}
                   </span>
-                  <span className="flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="flex items-center gap-1 font-extrabold text-emerald-600 dark:text-emerald-400">
                     <CheckCircle2 size={12} />
                     {exam.successRate}
                   </span>
@@ -439,14 +443,14 @@ export function HomePage() {
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
-                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded bg-amber-500/10 text-railway-gold text-xs font-bold">
+                <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded bg-amber-500/10 text-railway-gold text-xs font-black">
                   <Star size={12} fill="currentColor" />
                   {exam.rating}
                 </div>
                 <Button
                   as={Link}
                   to="/register"
-                  className="h-8 w-8 p-0 rounded-full bg-slate-100 hover:bg-railway-blue hover:text-white text-slate-700 dark:bg-slate-800 dark:hover:bg-cyan-500 dark:text-slate-300 flex items-center justify-center transition-all"
+                  className="h-9 w-9 p-0 rounded-xl bg-slate-100 hover:bg-railway-blue hover:text-white dark:bg-slate-800 dark:hover:bg-cyan-500 dark:text-slate-300 flex items-center justify-center transition-all shadow-sm"
                 >
                   <ChevronRight size={16} />
                 </Button>
@@ -459,39 +463,41 @@ export function HomePage() {
       {/* SECTION 4: INTERACTIVE MOCK TEST SHOWCASE (CBT DIAGNOSTIC) */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <span className="text-xs uppercase font-extrabold tracking-widest text-railway-red bg-railway-red/10 px-3 py-1 rounded-full">
-            Computer Based Test (CBT) Diagnostic
+          <span className="text-xs uppercase font-extrabold tracking-widest text-railway-red bg-railway-red/10 px-3.5 py-1 rounded-full">
+            CBT Mock Simulator
           </span>
-          <h2 className="text-3xl font-extrabold sm:text-4xl">
-            Experience the Actual Exam Layout Beforehand
+          <h2 className="text-3xl font-extrabold sm:text-5xl tracking-tight leading-tight">
+            Immersive CBT Cockpit Simulator
           </h2>
-          <p className="text-slate-655 dark:text-slate-350 text-sm">
-            Practice with our immersive simulated console. Choose a subject below to test your quick responses.
+          <p className="text-slate-600 dark:text-slate-350 text-sm font-semibold">
+            Evaluate your quick response. Click options to inspect real-time explanatory math models.
           </p>
         </div>
 
         {/* Mock CBT Console Container */}
-        <div className="rounded-xl border border-slate-350 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-2xl overflow-hidden max-w-4xl mx-auto">
+        <div className="rounded-2xl border border-slate-300 dark:border-slate-800 bg-[#0a1128] text-slate-100 shadow-2xl overflow-hidden max-w-4xl mx-auto glass-panel-futuristic">
+          
           {/* Console Header */}
-          <div className="bg-slate-950 px-4 py-3 flex flex-wrap items-center justify-between border-b border-slate-800 text-xs gap-3">
+          <div className="bg-[#030712] px-4 py-3 flex flex-wrap items-center justify-between border-b border-slate-800/80 text-xs gap-3">
             <div className="flex items-center gap-3">
-              <span className="px-2 py-0.5 rounded bg-railway-blue text-white font-bold tracking-wide">
-                STAGE-1 CBT
+              <span className="px-2 py-0.5 rounded bg-railway-blue text-white font-black tracking-wider text-[10px]">
+                RRB-CBT STAGE-1
               </span>
-              <span className="text-slate-400 font-semibold hidden sm:inline">RRB NTPC Sample Diagnostic</span>
+              <span className="text-slate-400 font-extrabold hidden sm:inline">Mock diagnostic test runs</span>
             </div>
+            
             <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1.5 text-amber-400 font-mono font-bold">
+              <div className="flex items-center gap-1.5 text-amber-400 font-mono font-black">
                 <TimerReset size={14} className="animate-spin-slow" />
                 <span>Time Left: {formatTime(cbtTimeLeft)}</span>
               </div>
-              <span className="text-slate-500">|</span>
-              <span className="font-bold text-slate-300">Aspirant ID: RRB-2026-MOCK</span>
+              <span className="text-slate-600">|</span>
+              <span className="font-bold text-slate-300">Aspirant: RRB-PREP-DECK</span>
             </div>
           </div>
 
           {/* Subject Navigation Tabs */}
-          <div className="bg-slate-950/40 px-4 py-2 border-b border-slate-800/80 flex overflow-x-auto gap-2">
+          <div className="bg-[#030712]/40 px-4 py-2 border-b border-slate-800/50 flex overflow-x-auto gap-2">
             {[
               { id: 'math', label: 'Mathematics' },
               { id: 'reasoning', label: 'General Intelligence' },
@@ -503,10 +509,10 @@ export function HomePage() {
                   setCbtActiveTab(tab.id);
                   setCbtSelectedOption(null);
                 }}
-                className={`px-3 py-1 rounded text-xs font-bold transition-all whitespace-nowrap ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all whitespace-nowrap ${
                   cbtActiveTab === tab.id
-                    ? 'bg-railway-blue text-white shadow-sm'
-                    : 'text-slate-450 hover:bg-slate-850 hover:text-white'
+                    ? 'bg-gradient-to-r from-railway-blue to-cyan-500 text-white shadow-md'
+                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 {tab.label}
@@ -520,11 +526,12 @@ export function HomePage() {
               {cbtActiveTab === 'math' && (
                 <div className="space-y-4">
                   <div className="flex items-start gap-2.5">
-                    <span className="font-bold text-railway-gold">Q1.</span>
-                    <p className="font-medium text-sm sm:text-base leading-relaxed">
+                    <span className="font-black text-railway-gold">Q1.</span>
+                    <p className="font-bold text-sm sm:text-base leading-relaxed text-slate-200">
                       A train 240 m long passes a pole in 24 seconds. How long will it take to pass a platform 650 m long at the same speed?
                     </p>
                   </div>
+                  
                   <div className="grid sm:grid-cols-2 gap-3 mt-4">
                     {[
                       { val: 'A', text: '65 seconds' },
@@ -535,16 +542,16 @@ export function HomePage() {
                       <button
                         key={opt.val}
                         onClick={() => setCbtSelectedOption(opt.val)}
-                        className={`flex items-center gap-3 p-3 rounded-lg border text-left text-xs sm:text-sm font-semibold transition-all ${
+                        className={`flex items-center gap-3 p-3.5 rounded-xl border text-left text-xs sm:text-sm font-bold transition-all ${
                           cbtSelectedOption === opt.val
                             ? opt.correct
-                              ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-                              : 'bg-rose-500/20 border-rose-500 text-rose-400'
-                            : 'bg-slate-950/50 border-slate-800 hover:bg-slate-850 hover:border-slate-700'
+                              ? 'bg-emerald-550/20 border-emerald-500 text-emerald-400 shadow-lg shadow-emerald-500/10'
+                              : 'bg-rose-550/20 border-rose-500 text-rose-400 shadow-lg shadow-rose-500/10'
+                            : 'bg-slate-950/40 border-slate-850 hover:bg-slate-900/60 hover:border-slate-700'
                         }`}
                       >
-                        <span className={`grid size-6 place-items-center rounded-full text-xs font-extrabold ${
-                          cbtSelectedOption === opt.val ? 'bg-current text-slate-950' : 'bg-slate-850'
+                        <span className={`grid size-6 place-items-center rounded-full text-xs font-black ${
+                          cbtSelectedOption === opt.val ? 'bg-current text-slate-950' : 'bg-slate-800 text-slate-300'
                         }`}>
                           {opt.val}
                         </span>
@@ -558,11 +565,12 @@ export function HomePage() {
               {cbtActiveTab === 'reasoning' && (
                 <div className="space-y-4">
                   <div className="flex items-start gap-2.5">
-                    <span className="font-bold text-railway-gold">Q1.</span>
-                    <p className="font-medium text-sm sm:text-base leading-relaxed">
+                    <span className="font-black text-railway-gold">Q1.</span>
+                    <p className="font-bold text-sm sm:text-base leading-relaxed text-slate-200">
                       If BENGALURU is coded as 951411232 and CHENNAI is coded as 38551419, then how will KOLKATA be coded in that language?
                     </p>
                   </div>
+                  
                   <div className="grid sm:grid-cols-2 gap-3 mt-4">
                     {[
                       { val: 'A', text: '111512111201' },
@@ -573,16 +581,16 @@ export function HomePage() {
                       <button
                         key={opt.val}
                         onClick={() => setCbtSelectedOption(opt.val)}
-                        className={`flex items-center gap-3 p-3 rounded-lg border text-left text-xs sm:text-sm font-semibold transition-all ${
+                        className={`flex items-center gap-3 p-3.5 rounded-xl border text-left text-xs sm:text-sm font-bold transition-all ${
                           cbtSelectedOption === opt.val
                             ? opt.correct
-                              ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-                              : 'bg-rose-500/20 border-rose-500 text-rose-400'
-                            : 'bg-slate-950/50 border-slate-800 hover:bg-slate-850 hover:border-slate-700'
+                              ? 'bg-emerald-550/20 border-emerald-500 text-emerald-400 shadow-lg shadow-emerald-500/10'
+                              : 'bg-rose-550/20 border-rose-500 text-rose-400 shadow-lg shadow-rose-500/10'
+                            : 'bg-slate-950/40 border-slate-850 hover:bg-slate-900/60 hover:border-slate-700'
                         }`}
                       >
-                        <span className={`grid size-6 place-items-center rounded-full text-xs font-extrabold ${
-                          cbtSelectedOption === opt.val ? 'bg-current text-slate-950' : 'bg-slate-850'
+                        <span className={`grid size-6 place-items-center rounded-full text-xs font-black ${
+                          cbtSelectedOption === opt.val ? 'bg-current text-slate-950' : 'bg-slate-800 text-slate-300'
                         }`}>
                           {opt.val}
                         </span>
@@ -596,11 +604,12 @@ export function HomePage() {
               {cbtActiveTab === 'science' && (
                 <div className="space-y-4">
                   <div className="flex items-start gap-2.5">
-                    <span className="font-bold text-railway-gold">Q1.</span>
-                    <p className="font-medium text-sm sm:text-base leading-relaxed">
+                    <span className="font-black text-railway-gold">Q1.</span>
+                    <p className="font-bold text-sm sm:text-base leading-relaxed text-slate-200">
                       Which of the following represents Newton&apos;s Second Law of Motion mathematically under standard assumptions?
                     </p>
                   </div>
+                  
                   <div className="grid sm:grid-cols-2 gap-3 mt-4">
                     {[
                       { val: 'A', text: 'F = m * a (Correct)', correct: true },
@@ -611,16 +620,16 @@ export function HomePage() {
                       <button
                         key={opt.val}
                         onClick={() => setCbtSelectedOption(opt.val)}
-                        className={`flex items-center gap-3 p-3 rounded-lg border text-left text-xs sm:text-sm font-semibold transition-all ${
+                        className={`flex items-center gap-3 p-3.5 rounded-xl border text-left text-xs sm:text-sm font-bold transition-all ${
                           cbtSelectedOption === opt.val
                             ? opt.correct
-                              ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-                              : 'bg-rose-500/20 border-rose-500 text-rose-400'
-                            : 'bg-slate-950/50 border-slate-800 hover:bg-slate-850 hover:border-slate-700'
+                              ? 'bg-emerald-550/20 border-emerald-500 text-emerald-400 shadow-lg shadow-emerald-500/10'
+                              : 'bg-rose-550/20 border-rose-500 text-rose-400 shadow-lg shadow-rose-500/10'
+                            : 'bg-slate-950/40 border-slate-850 hover:bg-slate-900/60 hover:border-slate-700'
                         }`}
                       >
-                        <span className={`grid size-6 place-items-center rounded-full text-xs font-extrabold ${
-                          cbtSelectedOption === opt.val ? 'bg-current text-slate-950' : 'bg-slate-850'
+                        <span className={`grid size-6 place-items-center rounded-full text-xs font-black ${
+                          cbtSelectedOption === opt.val ? 'bg-current text-slate-950' : 'bg-slate-800 text-slate-300'
                         }`}>
                           {opt.val}
                         </span>
@@ -632,21 +641,21 @@ export function HomePage() {
               )}
             </div>
 
-            {/* Answer Explanatory Feedback banner */}
+            {/* Explanatory banner */}
             {cbtSelectedOption && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-6 p-4 rounded-lg bg-white/5 border border-white/10 text-xs sm:text-sm flex items-start gap-3"
+                className="mt-6 p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 text-xs sm:text-sm flex items-start gap-3"
               >
                 <Lightbulb size={18} className="text-railway-gold shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-bold text-slate-200">
+                  <p className="font-black text-slate-100">
                     {cbtSelectedOption === 'B' || (cbtActiveTab === 'science' && cbtSelectedOption === 'A')
-                      ? 'Correct Answer chosen!'
+                      ? 'Correct Choice selected!'
                       : 'Incorrect Choice.'}
                   </p>
-                  <p className="text-slate-400 leading-relaxed mt-1">
+                  <p className="text-slate-450 leading-relaxed mt-1 font-medium">
                     {cbtActiveTab === 'math' &&
                       'Speed = Distance / Time = 240 / 24 = 10 m/s. To cross platform of 650m, total distance = Train (240) + Platform (650) = 890 m. Time = 890 / 10 = 89 seconds.'}
                     {cbtActiveTab === 'reasoning' &&
@@ -660,36 +669,44 @@ export function HomePage() {
           </div>
 
           {/* Console Footer */}
-          <div className="bg-slate-950 px-6 py-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-850">
-            <span className="text-slate-400 text-xs">Diagnostic Simulator v1.2</span>
+          <div className="bg-[#030712] px-6 py-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-850">
+            <span className="text-slate-500 text-xs font-bold">Simulator Engine v2.0</span>
             <div className="flex gap-2">
               <Button
                 type="button"
                 onClick={() => setCbtSelectedOption(null)}
                 variant="secondary"
-                className="h-8 px-3 rounded text-xs bg-slate-850 border-slate-800 text-slate-300 hover:bg-slate-800"
+                className="h-8.5 px-4 rounded-lg text-xs bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800 font-bold"
               >
                 Clear Selection
               </Button>
+              
               <Button
                 as={Link}
                 to="/register"
-                className="h-8 px-4 rounded text-xs bg-railway-blue hover:bg-railway-blue/90 border-none font-bold"
+                className="h-8.5 px-4 rounded-lg text-xs bg-gradient-to-r from-railway-blue to-cyan-500 border-none font-extrabold text-white"
               >
-                Enroll For Complete Test Series (120+ Sets)
+                Enroll in CBT series (120+ Sets)
               </Button>
             </div>
           </div>
+
         </div>
       </section>
 
-      {/* SECTION 5: PREVIOUS YEAR PAPERS HUB */}
+      {/* SECTION 5: PREVIOUS YEAR SHIFT PAPERS */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-        <SectionHeading
-          eyebrow="Shift archives"
-          title="Download PDF Shift Papers with Detailed Answers"
-          text="Access fully resolved actual previous year questions formatted into offline shift papers."
-        />
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="text-xs uppercase font-extrabold tracking-widest text-cyan-600 bg-cyan-500/10 px-3.5 py-1 rounded-full">
+            Solved papers
+          </span>
+          <h2 className="text-3xl font-extrabold sm:text-5xl tracking-tight leading-tight">
+            Download Shift PDFs with Solved Answers
+          </h2>
+          <p className="text-slate-600 dark:text-slate-350 text-sm font-semibold">
+            Access fully resolved actual previous year questions formatted into offline shift papers.
+          </p>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {pyqPapers.map((paper, i) => (
@@ -699,28 +716,28 @@ export function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="p-5 rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 flex flex-col justify-between relative group hover:border-railway-red/20 transition-all"
+              className="p-6 rounded-2xl glass-card-neon flex flex-col justify-between relative group"
             >
-              <div className="absolute top-4 right-4 text-xs font-bold text-railway-red/80 px-2 py-0.5 rounded bg-railway-red/5">
+              <div className="absolute top-4 right-4 text-xs font-black text-railway-red/90 px-2 py-0.5 rounded-md bg-railway-red/10 border border-railway-red/15">
                 {paper.year}
               </div>
 
               <div className="space-y-2">
-                <span className="inline-block text-[10px] font-bold tracking-widest text-slate-400 dark:text-slate-500 uppercase">
-                  PDF EXAM KEY
+                <span className="inline-block text-[8px] font-black tracking-widest text-slate-400 uppercase">
+                  PDF OFFLINE SET
                 </span>
-                <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white leading-tight">
+                <h4 className="font-extrabold text-base text-slate-900 dark:text-white leading-tight">
                   {paper.exam}
                 </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{paper.date}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold">{paper.date}</p>
               </div>
 
               <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-3">
-                <span className="text-xs text-slate-400 font-semibold">{paper.size}</span>
+                <span className="text-xs text-slate-400 font-black">{paper.size}</span>
                 <Button
                   onClick={() => handleDownload(paper.code)}
                   disabled={downloadingId !== null}
-                  className="h-8 px-3 rounded-lg text-xs font-bold bg-slate-100 hover:bg-railway-blue hover:text-white text-slate-700 dark:bg-slate-850 dark:hover:bg-cyan-500 dark:text-slate-200 border-none flex items-center gap-1.5 transition-all"
+                  className="h-8 px-3 rounded-lg text-xs font-extrabold bg-slate-100 hover:bg-railway-blue hover:text-white text-slate-700 dark:bg-slate-800 dark:hover:bg-cyan-500 dark:text-slate-200 border-none flex items-center gap-1.5 transition-all shadow-sm"
                 >
                   {downloadingId === paper.code ? (
                     <>
@@ -740,435 +757,131 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 6: AI TUTOR DOUBT-SOLVER WIDGET */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 relative z-10 items-center">
-        <div className="lg:col-span-5 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 rounded-full bg-railway-blue/10 px-3 py-1.5 text-xs font-semibold text-railway-blue dark:bg-cyan-500/10 dark:text-cyan-300"
-          >
-            <Bot size={14} className="text-railway-gold animate-bounce" />
-            <span>Interactive AI Concept Mentor</span>
-          </motion.div>
-
-          <h2 className="text-3xl font-extrabold sm:text-4xl tracking-tight leading-tight">
-            Meet Your 24/7 AI Tutor: Resolve Doubts in Seconds
+      {/* SECTION 6: TESTIMONIALS CAROUSEL */}
+      <section className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
+        <div className="text-center max-w-3xl mx-auto space-y-3">
+          <span className="text-xs uppercase font-extrabold tracking-widest text-railway-gold bg-amber-500/10 px-3.5 py-1 rounded-full">
+            Success journals
+          </span>
+          <h2 className="text-3xl font-extrabold sm:text-5xl tracking-tight leading-tight">
+            Aspirants Who Made It To Indian Railways
           </h2>
-          <p className="text-slate-600 dark:text-slate-350 text-sm leading-relaxed">
-            Stuck on complex speed calculations, logical coding-decoding patterns, or physics definitions? Ask our tutor to explain it in easy steps with colored math models.
+          <p className="text-slate-600 dark:text-slate-350 text-sm font-semibold">
+            See how candidates upgraded their speeds and scores to land dream technical posts.
           </p>
-
-          <div className="space-y-2">
-            <p className="text-xs uppercase font-extrabold text-slate-450 tracking-wider">
-              SELECT A DOUBT SAMPLE TO TEST:
-            </p>
-            <div className="flex flex-col gap-2">
-              {aiDoubtPrompts.map((doubt, i) => (
-                <button
-                  key={doubt.question}
-                  onClick={() => setActiveDoubtIndex(i)}
-                  className={`px-4 py-2.5 rounded-lg border text-left text-xs sm:text-sm font-semibold transition-all ${
-                    activeDoubtIndex === i
-                      ? 'bg-railway-blue/10 border-railway-blue text-railway-blue dark:bg-cyan-500/10 dark:border-cyan-500 dark:text-cyan-300 shadow-sm'
-                      : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  {doubt.question}
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
-        {/* AI Answer Bubble Container */}
-        <div className="lg:col-span-7">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-lg dark:border-slate-800 dark:bg-slate-900/80 backdrop-blur-md relative overflow-hidden min-h-[300px] flex flex-col justify-between">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-railway-gold/10 to-transparent pointer-events-none rounded-bl-full" />
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="grid size-8 place-items-center rounded bg-gradient-to-r from-railway-blue to-railway-navy text-white text-xs font-bold font-mono">
-                    AI
+        {/* Carousel slide card */}
+        <div className="relative overflow-hidden rounded-2xl glass-panel-futuristic p-8 sm:p-10 border border-white/10 dark:border-slate-800/60 max-w-3xl mx-auto">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-railway-gold/5 to-transparent pointer-events-none rounded-bl-full" />
+          
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTestimonial}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-6"
+            >
+              <div className="flex flex-col sm:flex-row gap-5 items-center">
+                <img
+                  src={testimonials[activeTestimonial].avatar}
+                  alt={testimonials[activeTestimonial].name}
+                  className="w-16 h-16 rounded-full object-cover border-2 border-railway-gold shadow-md shrink-0"
+                />
+                
+                <div className="text-center sm:text-left">
+                  <h4 className="font-extrabold text-lg text-slate-900 dark:text-white">
+                    {testimonials[activeTestimonial].name}
+                  </h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-bold">
+                    {testimonials[activeTestimonial].post}
+                  </p>
+                  <span className="mt-1.5 inline-block text-[9px] font-black text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/15 uppercase tracking-wide">
+                    {testimonials[activeTestimonial].badge}
                   </span>
-                  <div>
-                    <h4 className="font-bold text-xs">Railway Prep Tutor</h4>
-                    <span className="text-[10px] text-emerald-500 flex items-center gap-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                      online
-                    </span>
-                  </div>
                 </div>
-                <span className="text-[10px] text-slate-400">Response Speed: 0.2s</span>
               </div>
 
-              {/* Doubt Question Bubble */}
-              <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg max-w-[85%] self-end ml-auto text-xs sm:text-sm text-slate-850 dark:text-slate-200 font-semibold border border-slate-200/50 dark:border-slate-700">
-                {aiDoubtPrompts[activeDoubtIndex].question}
-              </div>
+              <blockquote className="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-200 italic font-medium">
+                &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
+              </blockquote>
+            </motion.div>
+          </AnimatePresence>
 
-              {/* Explaining answer text formatted */}
-              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/80 border border-slate-100 dark:border-slate-800/80 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-medium">
-                {aiTypingText}
-                {isTyping && <span className="inline-block w-1.5 h-4 bg-railway-blue animate-pulse ml-0.5" />}
-              </div>
-            </div>
+          {/* Carousel dots indicators */}
+          <div className="mt-8 flex justify-center gap-2">
+            {testimonials.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveTestimonial(idx)}
+                className={`w-3.5 h-1.5 rounded-full transition-all ${
+                  activeTestimonial === idx 
+                    ? 'bg-gradient-to-r from-railway-blue to-cyan-500 w-6' 
+                    : 'bg-slate-300 dark:bg-slate-700'
+                }`}
+                aria-label={`Testimonial slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
-              <span className="text-slate-400 font-semibold flex items-center gap-1">
-                <Brain size={12} className="text-railway-blue" />
-                Powered by Llama 3 Railway Reasoning Model
-              </span>
+      {/* SECTION 7: CALL TO ACTION SECTION */}
+      <section className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="rounded-3xl border border-white/20 bg-gradient-to-br from-[#0a1128] via-[#050917] to-slate-950 p-8 sm:p-12 text-center relative overflow-hidden shadow-2xl glass-panel-futuristic">
+          <div className="absolute inset-0 glowing-gradient-border opacity-5 pointer-events-none" />
+          <div className="absolute top-0 left-0 w-[40%] h-[40%] rounded-full bg-cyan-500/10 blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-[40%] h-[40%] rounded-full bg-rose-500/10 blur-[100px] pointer-events-none" />
+
+          <div className="space-y-6 relative z-10">
+            <h2 className="text-3xl font-extrabold sm:text-5xl tracking-tight leading-tight text-white">
+              Claim Your Seat on the Success Express
+            </h2>
+            
+            <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 leading-relaxed font-bold">
+              Join 50,000+ candidates who upgraded their quantitative reasoning speeds and CBT confidence indices. Get dynamic level-up rewards today.
+            </p>
+            
+            <div className="pt-4 flex flex-col sm:flex-row justify-center gap-4">
               <Button
                 as={Link}
                 to="/register"
-                className="h-8 px-3 rounded text-[11px] font-bold bg-railway-red hover:bg-railway-red/90 border-none text-white shadow-inner"
+                className="h-12 px-8 rounded-xl font-black bg-gradient-to-r from-railway-blue to-railway-red text-white border-none shadow-lg transform transition hover:scale-[1.03]"
               >
-                Ask a Personal Doubt
+                Enroll Free & Unlock 3D Cockpit
+              </Button>
+              
+              <Button
+                as={Link}
+                to="/login"
+                variant="secondary"
+                className="h-12 px-8 rounded-xl font-bold bg-slate-900 hover:bg-slate-800 text-white border-slate-800"
+              >
+                Access My Student Deck
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 7: PERFORMANCE ANALYTICS PREVIEW */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-12 relative z-10 items-center">
-        <div className="lg:col-span-7 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-railway-blue/5 to-railway-gold/5 blur-[50px] pointer-events-none rounded-full" />
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="p-5 rounded-2xl border border-slate-250 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900/90 backdrop-blur"
-          >
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-4">
-              <div>
-                <h4 className="font-bold text-sm sm:text-base">Subject Preparation Metrics</h4>
-                <p className="text-xs text-slate-450 font-semibold">Weekly average stats</p>
-              </div>
-              <span className="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-xs font-bold text-railway-blue dark:text-cyan-300">
-                Aspirant ID #4819
-              </span>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                { subject: 'Quantitative Aptitude (Speed Focus)', pct: 84, color: 'bg-railway-blue', score: '38/45 PYQs' },
-                { subject: 'Logical Reasoning (Non-Verbal)', pct: 92, color: 'bg-emerald-500', score: '28/30 PYQs' },
-                { subject: 'General Awareness (Current Affairs)', pct: 68, color: 'bg-railway-gold', score: '34/50 PYQs' },
-                { subject: 'General Science (Physics & Chemistry)', pct: 75, color: 'bg-railway-red', score: '22/30 PYQs' }
-              ].map((sub) => (
-                <div key={sub.subject} className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-bold">
-                    <span className="text-slate-800 dark:text-slate-250">{sub.subject}</span>
-                    <span className="text-slate-900 dark:text-slate-100">{sub.score} ({sub.pct}%)</span>
-                  </div>
-                  <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${sub.pct}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, ease: 'easeOut' }}
-                      className={`h-full rounded-full ${sub.color}`}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 grid grid-cols-3 gap-2 text-center text-xs">
-              <div>
-                <p className="text-slate-400 font-semibold">Total Time</p>
-                <p className="font-extrabold text-base text-slate-900 dark:text-slate-100 mt-0.5">38.4 Hrs</p>
-              </div>
-              <div>
-                <p className="text-slate-400 font-semibold">Weekly Growth</p>
-                <p className="font-extrabold text-base text-emerald-500 mt-0.5">+14% Score</p>
-              </div>
-              <div>
-                <p className="text-slate-400 font-semibold">Focus Factor</p>
-                <p className="font-extrabold text-base text-railway-red mt-0.5">High Speed</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="lg:col-span-5 space-y-6">
-          <SectionHeading
-            eyebrow="AI-driven feedback"
-            title="Smarter Reports That Guide Daily Targets"
-            text="Skip the confusing numbers. Our performance previews identify exactly which topics hold your overall score back and suggest rapid correction sprints."
-          />
-          
-          <div className="flex gap-4">
-            <span className="grid size-11 place-items-center rounded-xl bg-railway-red/10 text-railway-red shrink-0">
-              <BarChart3 size={20} />
-            </span>
-            <div className="space-y-1">
-              <h4 className="font-bold text-sm sm:text-base">Targeted Weak Spot Isolator</h4>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-350 leading-relaxed">
-                Automatically isolates categories where you are spending over 90 seconds per answer and triggers speed improvement revisions.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 8: LIVE LEADERBOARD */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs uppercase font-extrabold tracking-widest text-railway-gold bg-railway-gold/15 px-3 py-1 rounded-full">
-            Aspirant Rankings
-          </span>
-          <h2 className="text-3xl font-extrabold sm:text-4xl">
-            Learn with Peers on Top Railway Tiers
-          </h2>
-          <p className="text-slate-655 dark:text-slate-350 text-sm">
-            Earn your badges and rank alongside active students classified by Indian Railway Speed Tiers.
-          </p>
-        </div>
-
-        <div className="max-w-3xl mx-auto rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/60 overflow-hidden shadow-md">
-          <div className="bg-slate-50 dark:bg-slate-950 px-6 py-3 border-b border-slate-200 dark:border-slate-800 flex justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
-            <span>Aspirant Name</span>
-            <div className="flex gap-12">
-              <span className="hidden sm:inline">Tier Level</span>
-              <span>Score Pct</span>
-            </div>
-          </div>
-
-          <div className="divide-y divide-slate-100 dark:divide-slate-850">
-            {[
-              { name: 'Amit Pathak', tier: 'Vande Bharat Tier', pct: 99.8, rank: 1, rankColor: 'bg-amber-500' },
-              { name: 'Sameer Sen', tier: 'Vande Bharat Tier', pct: 99.2, rank: 2, rankColor: 'bg-slate-400' },
-              { name: 'Nikita Kumari', tier: 'Shatabdi Tier', pct: 98.4, rank: 3, rankColor: 'bg-amber-600' },
-              { name: 'Vikram Singh', tier: 'Shatabdi Tier', pct: 97.5, rank: 4, rankColor: 'bg-slate-700' },
-              { name: 'Megha Dwivedi', tier: 'Rajdhani Tier', pct: 96.1, rank: 5, rankColor: 'bg-slate-700' }
-            ].map((usr) => (
-              <div key={usr.name} className="px-6 py-4 flex justify-between items-center text-xs sm:text-sm font-semibold">
-                <div className="flex items-center gap-3">
-                  <span className={`grid size-6 place-items-center rounded-full text-[10px] font-extrabold text-white ${usr.rankColor}`}>
-                    {usr.rank}
-                  </span>
-                  <span className="text-slate-900 dark:text-slate-200">{usr.name}</span>
-                </div>
-
-                <div className="flex items-center gap-12">
-                  <span className="hidden sm:inline text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-350 px-2 py-0.5 rounded font-bold">
-                    {usr.tier}
-                  </span>
-                  <span className="text-railway-blue font-bold">{usr.pct}%</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 9: STUDENT SUCCESS STORIES */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-        <SectionHeading
-          eyebrow="Success Stories"
-          title="Designed for Aspirants Who Practice Every Day"
-          text="Hear from former students who turned consistent CBT practice runs into actual department postings."
-        />
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            {
-              name: 'Ankit Kumar',
-              role: 'Selected RRB NTPC (Station Master)',
-              quote: 'The Mock diagnostics saved my prep. The live timed environments forced me to manage sections faster.',
-              rating: 5,
-              badge: 'Batch of 2024'
-            },
-            {
-              name: 'Priya Sharma',
-              role: 'Selected Group D (Pointsman)',
-              quote: 'The mobile revision planner was brilliant. Doing short 10-question practice runs on the go changed everything.',
-              rating: 5,
-              badge: 'Batch of 2024'
-            },
-            {
-              name: 'Rahul Verma',
-              role: 'Selected ALP (Central Railway)',
-              quote: 'Solving previous year papers shift-wise is a must. The AI Tutor explains complex electrician math quickly.',
-              rating: 5,
-              badge: 'Batch of 2023'
-            }
-          ].map((story, i) => (
-            <motion.article
-              key={story.name}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="p-6 rounded-xl border border-slate-250 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900 flex flex-col justify-between relative group hover:shadow-md transition-all"
-            >
-              <div className="flex justify-between items-center mb-4">
-                <div className="flex gap-0.5 text-amber-500">
-                  {Array.from({ length: story.rating }).map((_, idx) => (
-                    <Star key={idx} size={14} fill="currentColor" />
-                  ))}
-                </div>
-                <span className="text-[10px] font-bold text-railway-blue bg-railway-blue/5 px-2 py-0.5 rounded">
-                  {story.badge}
-                </span>
-              </div>
-
-              <p className="text-slate-650 dark:text-slate-300 text-xs sm:text-sm leading-relaxed italic mb-6">
-                &quot;{story.quote}&quot;
-              </p>
-
-              <div className="flex items-center gap-3">
-                <span className="grid size-9 place-items-center rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200 shrink-0">
-                  <Award size={18} className="text-railway-gold" />
-                </span>
-                <div>
-                  <h4 className="font-bold text-sm text-slate-900 dark:text-white leading-tight">
-                    {story.name}
-                  </h4>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">{story.role}</p>
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION 10: PREMIUM FOOTER */}
-      <footer className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 sm:p-12 dark:border-slate-850 dark:bg-slate-900/60 shadow-xl backdrop-blur-md space-y-12">
-          {/* Main Footer Links */}
-          <div className="grid gap-8 md:grid-cols-12">
-            <div className="md:col-span-5 space-y-6">
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-lg bg-gradient-to-r from-railway-blue to-railway-navy text-white shadow-inner">
-                  <Trophy size={20} />
-                </span>
-                <div className="flex flex-col">
-                  <span className="text-base font-extrabold tracking-tight bg-gradient-to-r from-railway-blue to-railway-gold bg-clip-text text-transparent">
-                    RAILWAY PREP
-                  </span>
-                  <span className="text-[9px] font-medium tracking-widest text-slate-400">
-                    AI-POWERED PLATFORM
-                  </span>
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-550 dark:text-slate-350 leading-relaxed max-w-md">
-                India&apos;s premium modern examination learning environment. We bridge raw practice archives with custom AI analytics to help students clear railway entrance hurdles securely.
-              </p>
-              
-              {/* Newsletter form */}
-              <div className="space-y-2 max-w-xs">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                  Subscribe to exam alerts
-                </p>
-                <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed successfully!'); }} className="flex gap-2">
-                  <input
-                    type="email"
-                    required
-                    placeholder="Enter email..."
-                    className="h-9 px-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs focus:outline-none focus:border-railway-blue text-slate-900 dark:text-white flex-1"
-                  />
-                  <Button
-                    type="submit"
-                    className="h-9 px-3 bg-railway-blue hover:bg-railway-blue/90 text-white rounded-lg flex items-center justify-center border-none"
-                  >
-                    <Mail size={14} />
-                  </Button>
-                </form>
-              </div>
-            </div>
-
-            <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-6">
-              <FooterLinksColumn
-                title="Sprints"
-                links={[
-                  { name: 'RRB NTPC Mocks', to: '/register' },
-                  { name: 'Group D Science', to: '/register' },
-                  { name: 'ALP General Aptitude', to: '/register' },
-                  { name: 'Railway JE Technical', to: '/register' },
-                  { name: 'RPF SI Revision', to: '/register' }
-                ]}
-              />
-              <FooterLinksColumn
-                title="Features"
-                links={[
-                  { name: 'Diagnostic Console', to: '/register' },
-                  { name: '24/7 AI Tutor', to: '/register' },
-                  { name: 'Shift PDF Archives', to: '/register' },
-                  { name: 'Detailed Analytics', to: '/register' },
-                  { name: 'Peer Leaderboard', to: '/register' }
-                ]}
-              />
-              <FooterLinksColumn
-                title="Aspirants"
-                links={[
-                  { name: 'Secure Login', to: '/login' },
-                  { name: 'Enroll Free', to: '/register' },
-                  { name: 'Interactive FAQ', to: '/register' },
-                  { name: 'Terms of Use', to: '/register' },
-                  { name: 'Support Inbox', to: '/register' }
-                ]}
-              />
-            </div>
-          </div>
-
-          {/* Copyright line */}
-          <div className="pt-8 border-t border-slate-100 dark:border-slate-800/80 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
-            <p>&copy; 2026 Railway Prep Platform. Authorized learning partner mockup framework.</p>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-railway-blue">Privacy</a>
-              <span>&middot;</span>
-              <a href="#" className="hover:text-railway-blue">Security Standards</a>
-              <span>&middot;</span>
-              <a href="#" className="hover:text-railway-blue">Exam Updates</a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
 
 function SectionHeading({ eyebrow, title, text }) {
   return (
-    <div className="max-w-3xl space-y-3">
-      <p className="text-xs uppercase font-extrabold tracking-widest text-railway-blue dark:text-cyan-300">
+    <div className="space-y-2">
+      <span className="text-xs uppercase font-extrabold tracking-widest text-cyan-600 bg-cyan-500/10 px-3 py-1 rounded-full">
         {eyebrow}
-      </p>
-      <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white sm:text-4xl tracking-tight leading-tight">
+      </span>
+      <h2 className="text-3xl font-extrabold text-slate-950 dark:text-white tracking-tight">
         {title}
       </h2>
-      <p className="text-sm text-slate-600 dark:text-slate-350 leading-relaxed max-w-2xl">
+      <p className="text-sm text-slate-550 dark:text-slate-400 font-semibold leading-relaxed">
         {text}
       </p>
-    </div>
-  );
-}
-
-function FooterLinksColumn({ title, links }) {
-  return (
-    <div className="space-y-4">
-      <h4 className="text-xs font-bold text-slate-900 dark:text-slate-200 uppercase tracking-widest">
-        {title}
-      </h4>
-      <ul className="space-y-2 text-xs">
-        {links.map((link) => (
-          <li key={link.name}>
-            <Link
-              to={link.to}
-              className="text-slate-500 hover:text-railway-blue dark:text-slate-400 dark:hover:text-cyan-400 transition-colors font-medium"
-            >
-              {link.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

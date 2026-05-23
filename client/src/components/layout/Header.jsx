@@ -1,39 +1,65 @@
 import { Link } from 'react-router-dom';
-import { LogOut, Search, Home } from 'lucide-react';
+import { LogOut, Search, Home, Flame, Bell, Sparkles } from 'lucide-react';
 import { useAuth } from '../../features/auth/AuthProvider.jsx';
 import { Button } from '../ui/Button.jsx';
 import { ThemeToggle } from '../theme/ThemeToggle.jsx';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { NotificationDropdown } from '../NotificationDropdown.jsx';
+import { useLanguage } from '../../providers/LanguageProvider.jsx';
 
 export function RailwayLogo({ className = "h-9 w-9" }) {
   return (
     <svg className={className} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Railway Wheel Background */}
-      <circle cx="50" cy="50" r="42" stroke="currentColor" strokeWidth="2.5" strokeDasharray="6 4" className="text-railway-gold/50 animate-spin-slow" />
-      <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="1.5" className="text-railway-blue/20" />
+      {/* Outer Speed Ring */}
+      <circle 
+        cx="50" 
+        cy="50" 
+        r="44" 
+        stroke="currentColor" 
+        strokeWidth="2.5" 
+        strokeDasharray="12 6" 
+        className="text-cyan-500/40 dark:text-cyan-400/30 animate-spin-slow" 
+      />
+      <circle 
+        cx="50" 
+        cy="50" 
+        r="32" 
+        stroke="currentColor" 
+        strokeWidth="1.5" 
+        className="text-railway-blue/20 dark:text-cyan-500/10" 
+      />
       
-      {/* Rail Tracks Concept */}
-      <path d="M25 78 L75 78 M30 84 L70 84 M35 90 L65 90" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-railway-blue/30 dark:text-cyan-500/20" />
+      {/* Ground tracks */}
+      <path 
+        d="M20 80 L80 80 M25 86 L75 86 M30 92 L70 92" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        className="text-railway-red/40 dark:text-rose-500/30" 
+      />
       
-      {/* Vande Bharat Train Nose Silhouette */}
-      <path d="M20 58 C35 58, 40 45, 55 45 C65 45, 75 52, 85 52 L85 58 Z" fill="url(#trainGrad)" />
-      {/* Sleek windshield */}
-      <path d="M60 47 C65 47, 72 49, 76 52 L68 52 Z" fill="#0a1128" className="dark:fill-slate-100" />
-      {/* Speed lines */}
-      <path d="M15 50 H35 M10 54 H25" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-railway-red" />
-
-      {/* Book base */}
-      <path d="M30 65 C40 62, 50 65, 50 65 C50 65, 60 62, 70 65 L70 74 C60 71, 50 74, 50 74 C50 74, 40 71, 30 74 Z" fill="currentColor" className="text-railway-blue dark:text-cyan-400" />
+      {/* Vande Bharat train hull */}
+      <path 
+        d="M18 56 C32 56, 38 43, 56 43 C68 43, 76 50, 86 50 L86 56 Z" 
+        fill="url(#vandeGrad)" 
+      />
       
-      {/* AI Sparks */}
-      <path d="M50 20 L52 27 L59 29 L52 31 L50 38 L48 31 L41 29 L48 27 Z" fill="currentColor" className="text-railway-gold animate-pulse-slow" />
-      <path d="M78 28 L79 32 L83 33 L79 34 L78 38 L77 34 L73 33 L77 32 Z" fill="currentColor" className="text-railway-gold animate-pulse" />
+      {/* Windshield */}
+      <path d="M60 45 C64 45, 72 47, 76 50 L68 50 Z" fill="#030712" className="dark:fill-slate-100" />
+      
+      {/* Spark star */}
+      <path 
+        d="M50 16 L52 23 L59 25 L52 27 L50 34 L48 27 L41 25 L48 23 Z" 
+        fill="currentColor" 
+        className="text-railway-gold animate-pulse-slow" 
+      />
 
       <defs>
-        <linearGradient id="trainGrad" x1="20" y1="51.5" x2="85" y2="51.5" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#D32F2F" />
-          <stop offset="60%" stopColor="#005BAC" />
-          <stop offset="100%" stopColor="#004e93" />
+        <linearGradient id="vandeGrad" x1="18" y1="49.5" x2="86" y2="49.5" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FF2E93" />
+          <stop offset="50%" stopColor="#005BAC" />
+          <stop offset="100%" stopColor="#00F0FF" />
         </linearGradient>
       </defs>
     </svg>
@@ -42,70 +68,113 @@ export function RailwayLogo({ className = "h-9 w-9" }) {
 
 export function Header() {
   const { isAuthenticated, logout, user } = useAuth();
+  const { language, changeLanguage } = useLanguage();
+  const [showSearchAlert, setShowSearchAlert] = useState(false);
+
+  const handleSearchClick = () => {
+    // Dispatch search modal opener
+    window.dispatchEvent(new window.CustomEvent('open-global-search'));
+  };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-white/70 backdrop-blur-md dark:border-slate-800/40 dark:bg-[#0a1128]/70 shadow-sm transition-all duration-300">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-white/80 backdrop-blur-lg dark:border-slate-800/40 dark:bg-[#060b19]/80 shadow-md transition-all duration-300">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        
+        {/* LOGO AREA */}
         <Link to="/" className="flex items-center gap-3 font-bold text-slate-900 dark:text-white group">
           <motion.div 
-            whileHover={{ scale: 1.05, rotate: 2 }}
-            className="flex items-center justify-center p-0.5 rounded-lg bg-gradient-to-br from-railway-blue to-railway-navy shadow-inner"
+            whileHover={{ scale: 1.06, rotate: 2 }}
+            className="flex items-center justify-center p-0.5 rounded-xl bg-gradient-to-br from-railway-blue via-railway-red to-railway-gold shadow-md"
           >
-            <RailwayLogo className="h-10 w-10 text-white" />
+            <div className="bg-slate-950 p-1.5 rounded-[10px] flex items-center justify-center">
+              <RailwayLogo className="h-9 w-9 text-white" />
+            </div>
           </motion.div>
           <div className="flex flex-col">
-            <span className="text-lg tracking-tight bg-gradient-to-r from-railway-blue via-railway-red to-railway-gold bg-clip-text text-transparent font-extrabold leading-tight">
+            <span className="text-base tracking-tight bg-gradient-to-r from-railway-blue via-railway-red to-railway-gold bg-clip-text text-transparent font-black leading-tight">
               RAILWAY PREP
             </span>
-            <span className="text-[9px] font-medium tracking-widest text-slate-500 dark:text-slate-400 -mt-0.5">
-              AI-POWERED PLATFORM
+            <span className="text-[9px] font-bold tracking-widest text-slate-500 dark:text-slate-400 -mt-0.5">
+              3D AI STUDY SHELL
             </span>
           </div>
         </Link>
 
+        {/* MIDDLE CONTROLS */}
         <div className="flex items-center gap-3">
+          
           {isAuthenticated ? (
             <>
-              {/* Desktop/Tablet Global Search Trigger */}
+              {/* STREAK MULTIPLIER (Duolingo style) */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-orange-500/20 bg-orange-500/10 text-orange-600 dark:border-amber-500/20 dark:bg-amber-500/5 dark:text-amber-400 font-bold text-xs shadow-sm cursor-help animate-pulse-slow"
+                title={t('streakStatus')}
+              >
+                <Flame size={14} className="text-orange-500 fill-current animate-bounce" />
+                <span>{t('streakDays', { days: 15 })}</span>
+              </motion.div>
+
+              {/* SEARCH TRIGGER */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
-                onClick={() => window.dispatchEvent(new window.CustomEvent('open-global-search'))}
-                className="hidden items-center gap-2 rounded-lg border border-slate-200 bg-slate-50/50 px-3.5 py-2 text-xs font-semibold text-slate-500 hover:bg-white hover:text-slate-900 hover:border-railway-blue/30 dark:border-slate-800/60 dark:bg-slate-900/40 dark:text-slate-400 dark:hover:bg-slate-950 dark:hover:text-white dark:hover:border-cyan-500/30 sm:flex shadow-sm transition-all duration-200"
+                onClick={handleSearchClick}
+                className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-1.5 text-xs font-semibold text-slate-500 hover:bg-white hover:text-slate-900 hover:border-railway-blue/30 dark:border-slate-800/60 dark:bg-slate-900/40 dark:text-slate-400 dark:hover:bg-slate-950 dark:hover:text-white dark:hover:border-cyan-500/35 sm:flex shadow-sm transition-all"
               >
-                <Search size={14} className="text-slate-400 dark:text-slate-500" />
-                <span>Search Dashboard...</span>
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-0.5 rounded border border-slate-200/60 bg-slate-100 px-1.5 font-mono text-[9px] font-bold text-slate-400 dark:border-slate-800 dark:bg-slate-950/60">
+                <Search size={13} className="text-slate-400 dark:text-slate-500" />
+                <span>{t('searchPlaceholder')}</span>
+                <kbd className="pointer-events-none inline-flex h-4.5 select-none items-center gap-0.5 rounded border border-slate-200 bg-slate-100 px-1.5 font-mono text-[8px] font-bold text-slate-450 dark:border-slate-800 dark:bg-slate-950">
                   /
                 </kbd>
               </motion.button>
 
-              {/* Mobile Global Search Trigger */}
+              {/* MOBILE SEARCH ICON */}
               <button
                 type="button"
-                onClick={() => window.dispatchEvent(new window.CustomEvent('open-global-search'))}
-                className="grid size-9 place-items-center rounded-lg border border-slate-200 bg-slate-50/50 text-slate-500 hover:bg-white hover:text-slate-950 dark:border-slate-800/60 dark:bg-slate-900/40 dark:text-slate-400 dark:hover:bg-slate-950 dark:hover:text-white sm:hidden"
-                aria-label="Search"
+                onClick={handleSearchClick}
+                className="grid size-9 place-items-center rounded-xl border border-slate-200 bg-slate-50/50 text-slate-500 hover:bg-white hover:text-slate-950 dark:border-slate-800/60 dark:bg-slate-900/40 dark:text-slate-400 dark:hover:bg-slate-950 dark:hover:text-white sm:hidden"
+                aria-label="Search Dashboard"
               >
-                <Search size={16} />
+                <Search size={15} />
               </button>
 
-              <Link
-                to="/dashboard"
-                className="hidden text-sm font-semibold bg-gradient-to-r from-railway-blue to-railway-gold bg-clip-text text-transparent hover:brightness-110 sm:inline transition-all duration-200"
+              {/* BILINGUAL LANGUAGE SWITCHER */}
+              <div className="relative flex items-center">
+                <select
+                  value={language}
+                  onChange={(e) => changeLanguage(e.target.value)}
+                  className="rounded-lg border border-slate-200 bg-white/90 px-2 py-1.5 text-xs font-extrabold text-slate-700 outline-none hover:bg-slate-50 hover:border-railway-blue/30 dark:border-slate-800/60 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900 cursor-pointer shadow-sm transition"
+                >
+                  <option value="en">🇬🇧 EN</option>
+                  <option value="hi">🇮🇳 हिन्दी</option>
+                </select>
+              </div>
+
+              {/* NOTIFICATION DROP-DOWN */}
+              <div className="relative">
+                <NotificationDropdown />
+              </div>
+
+              {/* BACKSTAGE ROUTE LINKS */}
+              <Button 
+                as={Link} 
+                to="/dashboard" 
+                className="h-9 px-3 rounded-xl border-none bg-gradient-to-r from-railway-blue to-cyan-500 hover:brightness-110 text-white shadow-sm flex items-center gap-1 text-xs font-extrabold"
               >
-                {user?.name}
-              </Link>
-              
-              <Button as={Link} to="/" variant="secondary" className="gap-2 px-3.5 h-9 rounded-lg border-slate-200/80 bg-slate-50/80 hover:bg-white dark:border-slate-800/60 dark:bg-slate-900/50 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300">
-                <Home size={15} aria-hidden="true" className="text-railway-blue dark:text-cyan-400" />
-                <span className="hidden md:inline font-medium">Home</span>
+                <Sparkles size={13} className="animate-spin-slow" />
+                <span>{t('studyCockpit')}</span>
               </Button>
 
-              <Button type="button" variant="secondary" className="gap-2 px-3.5 h-9 rounded-lg border-slate-200/80 bg-slate-50/80 hover:bg-white dark:border-slate-800/60 dark:bg-slate-900/50 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-300" onClick={logout}>
-                <LogOut size={15} aria-hidden="true" className="text-railway-red" />
-                <span className="hidden md:inline font-medium">Logout</span>
+              <Button 
+                type="button" 
+                variant="secondary" 
+                className="gap-1.5 px-3 h-9 rounded-xl border-slate-200/80 bg-slate-50/80 hover:bg-white dark:border-slate-800/60 dark:bg-slate-900/50 dark:hover:bg-slate-950 text-slate-700 dark:text-slate-350 text-xs font-semibold" 
+                onClick={logout}
+              >
+                <LogOut size={13} className="text-railway-red" />
+                <span className="hidden md:inline">{t('logout')}</span>
               </Button>
             </>
           ) : (
@@ -114,26 +183,27 @@ export function Header() {
                 as={Link} 
                 to="/login" 
                 variant="secondary"
-                className="h-9 rounded-lg border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900"
+                className="h-9 rounded-xl border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-900 text-xs font-semibold"
               >
                 Login
               </Button>
               <Button 
                 as={Link} 
                 to="/register" 
-                className="hidden sm:inline-flex h-9 rounded-lg bg-gradient-to-r from-railway-blue to-railway-red hover:from-railway-blue/90 hover:to-railway-red/90 text-white shadow-sm border-none"
+                className="h-9 rounded-xl bg-gradient-to-r from-railway-blue to-railway-red hover:brightness-110 text-white shadow-md border-none text-xs font-extrabold px-4"
               >
-                Register
+                Register Free
               </Button>
             </>
           )}
+
+          {/* THEME TOGGLER */}
           <div className="pl-1 border-l border-slate-200/60 dark:border-slate-800/60">
             <ThemeToggle />
           </div>
         </div>
+
       </div>
     </header>
   );
 }
-
-

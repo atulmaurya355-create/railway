@@ -19,6 +19,11 @@ export async function authenticate(req, res, next) {
       return;
     }
 
+    if (user.isSuspended) {
+      res.status(403).json({ success: false, message: 'Your account has been suspended by an administrator.' });
+      return;
+    }
+
     req.user = user;
     next();
   } catch (_error) {

@@ -18,7 +18,16 @@ const notificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['dailyReminder', 'achievement', 'newQuiz'],
+      enum: [
+        'dailyReminder',
+        'achievement',
+        'newQuiz',
+        'studyReminder',
+        'weakTopic',
+        'mockTest',
+        'streak',
+        'revision',
+      ],
       required: true,
       index: true,
     },

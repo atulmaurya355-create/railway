@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,15 +6,46 @@
 
 :root {
   color-scheme: light;
+  --railway-blue: #005BAC;
+  --railway-red: #D32F2F;
+  --railway-gold: #FFC107;
+  --neon-cyan: #00F0FF;
+  --neon-red: #FF2E93;
+  --deep-blue: #060B19;
+  --metallic-silver: #F1F5F9;
+  --bg-gradient-start: #FAFAFA;
+  --bg-gradient-end: #F1F5F9;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(0, 91, 172, 0.1);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --sidebar-active-bg: rgba(0, 91, 172, 0.08);
 }
 
 .dark {
   color-scheme: dark;
+  --railway-blue: #0A84FF;
+  --railway-red: #FF453A;
+  --railway-gold: #FFD60A;
+  --neon-cyan: #00F0FF;
+  --neon-red: #FF2E93;
+  --deep-blue: #030712;
+  --metallic-silver: #1F2937;
+  --bg-gradient-start: #060B19;
+  --bg-gradient-end: #030712;
+  --card-bg: rgba(10, 17, 40, 0.6);
+  --card-border: rgba(0, 240, 255, 0.15);
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --sidebar-active-bg: rgba(0, 240, 255, 0.08);
 }
 
 body {
-  @apply min-h-screen bg-slate-50 text-slate-950 antialiased dark:bg-[#060b19] dark:text-slate-50;
+  @apply min-h-screen text-slate-900 antialiased transition-colors duration-300;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  color: var(--text-primary);
   font-family: 'Outfit', 'Inter', sans-serif;
+  overflow-x: hidden;
 }
 
 #root {
@@ -22,116 +53,180 @@ body {
 }
 
 /* Premium Glassmorphism styling */
-.glass-panel {
-  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm dark:bg-slate-900/60 dark:border-slate-800/40;
+.glass-panel-futuristic {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
 }
 
-.glass-card {
-  @apply bg-white/60 backdrop-blur-lg border border-white/20 shadow-sm hover:shadow-md transition duration-300 dark:bg-slate-950/60 dark:border-slate-800/50;
+.glass-card-neon {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
 }
 
-.glass-card-premium {
-  @apply bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-xl border border-white/30 shadow-md dark:from-slate-900/70 dark:to-slate-950/40 dark:border-slate-800/30;
+.glass-card-neon:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 12px 30px rgba(0, 240, 255, 0.15);
 }
 
-/* Custom background patterns */
-.railway-grid {
-  background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(0, 91, 172, 0.04) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(0, 91, 172, 0.04) 1px, transparent 1px);
+.glass-card-neon-red:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-red);
+  box-shadow: 0 12px 30px rgba(255, 46, 147, 0.15);
 }
 
-.dark .railway-grid {
-  background-image: linear-gradient(to right, rgba(0, 91, 172, 0.08) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(0, 91, 172, 0.08) 1px, transparent 1px);
+/* Railway Dots & Grid Grid Overlay */
+.railway-grid-neon {
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.04) 1px, transparent 1px);
 }
 
-.railway-dots {
-  background-image: radial-gradient(rgba(0, 91, 172, 0.08) 1px, transparent 1px);
-  background-size: 20px 20px;
+.dark .railway-grid-neon {
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.06) 1px, transparent 1px);
 }
 
-.dark .railway-dots {
-  background-image: radial-gradient(rgba(255, 193, 7, 0.04) 1px, transparent 1px);
+.railway-dots-gold {
+  background-image: radial-gradient(rgba(255, 193, 7, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Keyframe animations */
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
+.dark .railway-dots-gold {
+  background-image: radial-gradient(rgba(255, 214, 10, 0.05) 1px, transparent 1px);
+}
+
+/* Custom Neumorphic shadow styling */
+.shadow-neumorphic {
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.05), -6px -6px 12px rgba(255, 255, 255, 0.8);
+}
+
+.dark .shadow-neumorphic {
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.02);
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-gradient-start);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 91, 172, 0.2);
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--railway-blue);
+}
+
+/* Elite Keyframe Animations */
+@keyframes neon-pulse-cyan {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2), inset 0 0 5px rgba(0, 240, 255, 0.1);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 10px rgba(0, 240, 255, 0.2);
   }
 }
 
-@keyframes float-soft {
+@keyframes neon-pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 46, 147, 0.2), inset 0 0 5px rgba(255, 46, 147, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 46, 147, 0.4), inset 0 0 10px rgba(255, 46, 147, 0.2);
+  }
+}
+
+@keyframes float-gentle {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-8px) rotate(0.5deg);
+    transform: translateY(-8px) rotate(0.8deg);
   }
 }
 
-@keyframes train-move {
+@keyframes glowing-neon-line {
   0% {
-    transform: translateX(-10%);
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateX(110%);
-    opacity: 0;
-  }
-}
-
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(0, 91, 172, 0.2);
+    background-position: 0% 50%;
   }
   50% {
-    box-shadow: 0 0 25px rgba(0, 91, 172, 0.4);
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-/* Utility Animations */
-.animate-fade-up {
-  animation: fade-up 0.7s ease both;
+/* Animation utilities */
+.animate-neon-pulse {
+  animation: neon-pulse-cyan 3s infinite ease-in-out;
 }
 
-.animate-float-soft {
-  animation: float-soft 4s ease-in-out infinite;
+.animate-neon-pulse-red {
+  animation: neon-pulse-red 3s infinite ease-in-out;
 }
 
-.animate-train-running {
-  animation: train-move 14s linear infinite;
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
 }
 
-.animate-glow {
-  animation: glow-pulse 3s infinite;
+.glowing-gradient-border {
+  background: linear-gradient(90deg, var(--railway-red), var(--neon-cyan), var(--railway-gold), var(--railway-blue));
+  background-size: 400% 400%;
+  animation: glowing-neon-line 8s ease infinite;
 }
 
-.animation-delay-100 {
-  animation-delay: 100ms;
+/* 3D Perspective Tilt wrapper */
+.perspective-container {
+  perspective: 1000px;
 }
 
-.animation-delay-200 {
-  animation-delay: 200ms;
+.tilt-element {
+  transition: transform 0.1s ease-out;
+  transform-style: preserve-3d;
 }
 
-.animation-delay-300 {
-  animation-delay: 300ms;
+.tilt-content {
+  transform: translateZ(20px);
 }
 
-.animation-delay-500 {
-  animation-delay: 500ms;
+/* RRB Official Mock Test console styles */
+.rrb-cbt-palette-btn {
+  position: relative;
+  transition: all 0.2s ease-in-out;
 }
 
+.rrb-cbt-palette-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  background: currentColor;
+  opacity: 0.15;
+  transition: opacity 0.2s;
+}
+
+.rrb-cbt-palette-btn:hover::before {
+  opacity: 0.3;
+}

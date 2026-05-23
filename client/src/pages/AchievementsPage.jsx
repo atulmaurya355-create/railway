@@ -635,133 +635,179 @@ Keep studying and scoring 90%+!
   };
 
   const initials = getInitials(user?.name);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <section className="space-y-6">
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800/60 dark:bg-slate-900 transition-all duration-300">
-        <div className="grid min-h-[calc(100vh-9rem)] lg:grid-cols-[17rem_1fr]">
-          
-          {/* Side navigation */}
-          <aside className="hidden border-r border-slate-200/80 bg-slate-50/50 p-4 dark:border-slate-800/60 dark:bg-[#0a1128]/40 lg:block">
-            <SidebarContent />
-          </aside>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-[#060b19] dark:to-[#030712] transition-colors duration-300">
+      
+      {/* Interactive Collapsible Sidebar shell */}
+      <div className="flex h-screen overflow-hidden">
+        
+        {/* DESKTOP SIDEBAR */}
+        <aside 
+          className={`hidden lg:flex flex-col border-r border-slate-200/80 bg-white/70 backdrop-blur-md dark:border-slate-800/40 dark:bg-slate-900/60 transition-all duration-300 relative z-20 ${
+            isSidebarCollapsed ? 'w-20' : 'w-64'
+          }`}
+        >
+          <div className="h-16 flex items-center justify-between px-4 border-b border-slate-200/50 dark:border-slate-850">
+            <Link to="/" className="flex items-center gap-2.5 overflow-hidden">
+              <div className="bg-slate-950 p-1.5 rounded-lg flex items-center justify-center shrink-0">
+                <RailwayLogo className="h-6 w-6 text-white" />
+              </div>
+              {!isSidebarCollapsed && (
+                <span className="font-extrabold text-sm tracking-tight bg-gradient-to-r from-railway-blue to-cyan-500 bg-clip-text text-transparent truncate">
+                  STUDENT DECK
+                </span>
+              )}
+            </Link>
+            
+            <button
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className="hidden lg:grid size-7 place-items-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-900 shadow-sm"
+            >
+              {isSidebarCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+            </button>
+          </div>
 
-          {isSidebarOpen ? (
+          <div className="flex-1 overflow-y-auto px-3 py-4">
+            <SidebarContent isCollapsed={isSidebarCollapsed} />
+          </div>
+        </aside>
+
+        {/* MOBILE DRAWER */}
+        <AnimatePresence>
+          {isSidebarOpen && (
             <div className="fixed inset-0 z-40 lg:hidden">
-              <button
-                type="button"
-                aria-label="Close navigation"
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.6 }}
+                exit={{ opacity: 0 }}
                 className="absolute inset-0 bg-slate-950/60 backdrop-blur-xs"
                 onClick={() => setIsSidebarOpen(false)}
               />
-              <aside className="relative h-full w-72 border-r border-slate-200 bg-white p-5 shadow-2xl dark:border-slate-800 dark:bg-slate-950">
+              <motion.aside
+                initial={{ x: -280 }}
+                animate={{ x: 0 }}
+                exit={{ x: -280 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="relative h-full w-72 border-r border-slate-250 bg-white p-5 shadow-2xl dark:border-slate-800 dark:bg-slate-950"
+              >
                 <div className="mb-6 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <RailwayLogo className="h-8 w-8 text-railway-blue" />
+                    <div className="bg-slate-950 p-1.5 rounded-lg">
+                      <RailwayLogo className="h-6 w-6 text-white" />
+                    </div>
                     <span className="font-extrabold text-slate-900 dark:text-white text-sm tracking-tight">
                       STUDENT DECK
                     </span>
                   </div>
+                  
                   <button
                     type="button"
                     aria-label="Close navigation"
-                    className="grid size-8 place-items-center rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-350 dark:hover:bg-slate-900"
+                    className="grid size-8 place-items-center rounded-lg border border-slate-200 text-slate-655 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-350 dark:hover:bg-slate-900"
                     onClick={() => setIsSidebarOpen(false)}
                   >
                     <X size={16} aria-hidden="true" />
                   </button>
                 </div>
-                <SidebarContent onClose={() => setIsSidebarOpen(false)} />
-              </aside>
-            </div>
-          ) : null}
-
-          {/* Main Workspace */}
-          <div className="min-w-0 bg-slate-50/50 dark:bg-[#060b19]/60 flex flex-col">
-            <nav className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 px-4 py-3 backdrop-blur-md dark:border-slate-800/50 dark:bg-[#0a1128]/80 sm:px-6">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex min-w-0 items-center gap-3">
-                  <button
-                    type="button"
-                    aria-label="Open navigation"
-                    className="grid size-10 place-items-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-900 lg:hidden"
-                    onClick={() => setIsSidebarOpen(true)}
-                  >
-                    <Menu size={19} aria-hidden="true" />
-                  </button>
-                  <div className="min-w-0">
-                    <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500">
-                      Gamification
-                    </p>
-                    <h1 className="truncate text-base font-extrabold text-slate-950 dark:text-white sm:text-lg -mt-0.5">
-                      Achievements & Credentials
-                    </h1>
-                  </div>
+                
+                <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+                  <SidebarContent isCollapsed={false} onClose={() => setIsSidebarOpen(false)} />
                 </div>
+              </motion.aside>
+            </div>
+          )}
+        </AnimatePresence>
 
-                <div className="flex items-center gap-2.5">
-                  <button
-                    type="button"
-                    onClick={() => window.dispatchEvent(new window.CustomEvent('open-global-search'))}
-                    className="flex h-9 items-center gap-2 rounded-lg border border-slate-200 bg-white/90 px-3 font-semibold text-slate-500 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-850 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-white shadow-sm"
-                    title="Search (Press /)"
-                  >
-                    <Search size={14} className="text-slate-400" />
-                    <span className="hidden md:inline text-xs">Search platform...</span>
-                    <kbd className="hidden lg:inline-flex pointer-events-none select-none items-center gap-0.5 rounded border border-slate-250 bg-slate-50 px-1.5 font-mono text-[9px] text-slate-450 dark:border-slate-800 dark:bg-slate-900">
-                      /
-                    </kbd>
-                  </button>
+        {/* MAIN BODY AREA */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          
+          <nav className="sticky top-0 z-10 h-16 border-b border-slate-200/80 bg-white/70 backdrop-blur-md px-4 py-3 dark:border-slate-800/40 dark:bg-[#060b19]/80 sm:px-6 flex items-center justify-between gap-3">
+            
+            <div className="flex min-w-0 items-center gap-3">
+              <button
+                type="button"
+                aria-label="Open navigation"
+                className="grid size-9 place-items-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-200 dark:hover:bg-slate-900 lg:hidden"
+                onClick={() => setIsSidebarOpen(true)}
+              >
+                <Menu size={18} aria-hidden="true" />
+              </button>
+              
+              <div className="min-w-0">
+                <p className="text-[9px] uppercase font-black tracking-widest text-slate-400 dark:text-slate-500">
+                  Gamification
+                </p>
+                <h1 className="truncate text-base sm:text-xl font-extrabold text-slate-950 dark:text-white -mt-0.5 leading-tight">
+                  Achievements & Credentials
+                </h1>
+              </div>
+            </div>
 
-                  <NotificationDropdown />
-                  
-                  <div className="relative">
-                    <button
-                      type="button"
-                      className="flex h-9 items-center gap-2 rounded-lg border border-slate-200 bg-white px-2.5 text-left dark:border-slate-800 dark:bg-slate-950 shadow-sm"
-                      aria-expanded={isProfileOpen}
-                      onClick={() => setIsProfileOpen((current) => !current)}
-                    >
-                      <span className="grid size-7 place-items-center rounded bg-gradient-to-tr from-railway-blue to-railway-red text-xs font-bold text-white shadow-inner">
-                        {initials}
-                      </span>
-                      <span className="hidden max-w-28 truncate text-xs font-semibold text-slate-800 dark:text-slate-255 sm:block">
-                        {user?.name ?? 'Student'}
-                      </span>
-                      <ChevronDown size={14} className="text-slate-400" aria-hidden="true" />
-                    </button>
+            <div className="flex items-center gap-2.5">
+              <NotificationDropdown />
+              
+              <div className="relative">
+                <button
+                  type="button"
+                  className="flex h-9 items-center gap-2 rounded-lg border border-slate-200 bg-white px-2.5 text-left dark:border-slate-800 dark:bg-slate-950 shadow-sm"
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                >
+                  <span className="grid size-7 place-items-center rounded bg-gradient-to-tr from-railway-blue to-railway-red text-xs font-black text-white">
+                    {initials}
+                  </span>
+                  <span className="hidden max-w-28 truncate text-xs font-bold text-slate-800 dark:text-slate-200 sm:block">
+                    {user?.name ?? 'Student'}
+                  </span>
+                  <ChevronDown size={14} className="text-slate-400" aria-hidden="true" />
+                </button>
 
-                    {isProfileOpen ? (
-                      <div className="absolute right-0 mt-2 w-52 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-900 z-50">
+                <AnimatePresence>
+                  {isProfileOpen && (
+                    <>
+                      <div className="fixed inset-0 z-30" onClick={() => setIsProfileOpen(false)} />
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-52 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-800 dark:bg-slate-900 z-40"
+                      >
                         <div className="border-b border-slate-100 px-3 py-2 dark:border-slate-800/80">
-                          <p className="truncate text-xs font-bold text-slate-900 dark:text-white">
+                          <p className="truncate text-xs font-black text-slate-900 dark:text-white">
                             {user?.name ?? 'Student'}
                           </p>
-                          <p className="truncate text-[10px] text-slate-450 mt-0.5">{user?.email}</p>
+                          <p className="truncate text-[10px] text-slate-550 mt-0.5">{user?.email}</p>
                         </div>
+                        
                         <Link
                           to="/profile"
-                          className="mt-1 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-350 dark:hover:bg-slate-800"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="mt-1.5 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-355 dark:hover:bg-slate-800"
                         >
-                          <User size={14} className="text-slate-400" aria-hidden="true" />
+                          <User size={13} className="text-slate-450" />
                           <span>My Profile</span>
                         </Link>
+                        
                         <button
                           type="button"
                           className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-bold text-railway-red hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/20"
                           onClick={logout}
                         >
-                          <LogOut size={14} aria-hidden="true" />
+                          <LogOut size={13} />
                           <span>Logout</span>
                         </button>
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
+                      </motion.div>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
-            </nav>
 
-            <div className="space-y-6 p-4 sm:p-6 flex-1">
+            </div>
+          </nav>
+
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50/50 dark:bg-[#060b19]/60">
+            <div className="max-w-7xl mx-auto space-y-6">
               
               {/* Gamification Status Switcher Card */}
               <div className="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-850 dark:bg-slate-900/80 md:flex-row md:items-center md:justify-between">
@@ -1003,30 +1049,37 @@ Keep studying and scoring 90%+!
               </section>
 
             </div>
-          </div>
-
+          </main>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
-function SidebarContent({ onClose }) {
+function SidebarContent({ isCollapsed, onClose }) {
   return (
     <div className="flex h-full flex-col justify-between">
       <div className="space-y-6">
-        {/* Profile Branding Header */}
-        <div className="rounded-xl bg-gradient-to-br from-railway-blue via-railway-blue to-railway-navy p-4 text-white shadow-lg relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/10 to-transparent pointer-events-none rounded-bl-full" />
-          <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-200">
-            Exam Prep Deck
-          </p>
-          <p className="mt-0.5 text-base font-extrabold leading-tight">Aspirant Console</p>
-          <div className="mt-3 flex items-center gap-2 text-[10px] bg-white/15 px-2.5 py-1 rounded font-bold self-start w-fit">
-            <ShieldCheck size={11} className="text-railway-gold" />
-            <span>Secure account verified</span>
+        
+        {!isCollapsed ? (
+          <div className="rounded-2xl bg-gradient-to-br from-railway-blue via-railway-blue to-[#0a1128] p-4 text-white shadow-lg relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/10 to-transparent pointer-events-none rounded-bl-full animate-pulse-slow" />
+            <p className="text-[9px] font-black uppercase tracking-widest text-cyan-300">
+              Exam Prep Deck
+            </p>
+            <p className="mt-0.5 text-base font-extrabold leading-tight">Aspirant Console</p>
+            <div className="mt-3.5 flex items-center gap-2 text-[9px] bg-white/15 px-2.5 py-1 rounded-md font-bold w-fit">
+              <ShieldCheck size={11} className="text-railway-gold" />
+              <span>Secure verified study key</span>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex justify-center py-2">
+            <div className="bg-gradient-to-br from-railway-blue to-cyan-500 p-2 rounded-xl text-white shadow-md">
+              <ShieldCheck size={16} />
+            </div>
+          </div>
+        )}
 
         <nav className="space-y-1">
           {navigationItems.map((item) => (
@@ -1034,24 +1087,39 @@ function SidebarContent({ onClose }) {
               key={item.label}
               to={item.href ?? '/dashboard'}
               onClick={onClose}
-              className={`flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
+              className={`flex items-center rounded-xl transition-all relative group ${
+                isCollapsed ? 'justify-center p-3' : 'px-3.5 py-3 text-xs font-black gap-3'
+              } ${
                 item.active
                   ? 'bg-gradient-to-r from-railway-blue/10 to-transparent text-railway-blue border-l-[3px] border-railway-blue dark:text-cyan-400 dark:from-cyan-500/10'
                   : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-slate-900/60 dark:hover:text-slate-100'
               }`}
             >
-              <item.icon size={15} className={item.active ? 'text-railway-blue dark:text-cyan-400' : 'text-slate-400'} aria-hidden="true" />
-              <span>{item.label}</span>
+              <item.icon 
+                size={15} 
+                className={`shrink-0 ${item.active ? 'text-railway-blue dark:text-cyan-400' : 'text-slate-400'}`} 
+                aria-hidden="true" 
+              />
+              
+              {!isCollapsed ? (
+                <span>{item.label}</span>
+              ) : (
+                <span className="absolute left-16 z-50 scale-0 rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs text-white shadow-lg group-hover:scale-100 whitespace-nowrap transition-all duration-200">
+                  {item.label}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
       </div>
 
-      <div className="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800">
-        <p className="text-[10px] text-slate-400 font-semibold text-center">
-          Railway Prep Engine v2.0
-        </p>
-      </div>
+      {!isCollapsed && (
+        <div className="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
+          <p className="text-[9px] text-slate-400 font-extrabold">
+            Railway Prep Deck v2.0
+          </p>
+        </div>
+      )}
     </div>
   );
 }
