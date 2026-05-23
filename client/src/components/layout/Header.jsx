@@ -68,7 +68,7 @@ export function RailwayLogo({ className = "h-9 w-9" }) {
 
 export function Header() {
   const { isAuthenticated, logout, user } = useAuth();
-  const { language, changeLanguage } = useLanguage();
+  const { language, changeLanguage, t } = useLanguage();
   const [showSearchAlert, setShowSearchAlert] = useState(false);
 
   const handleSearchClick = () => {
